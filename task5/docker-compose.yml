@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  task5:
+    build: ./
+    command: ./wait-for-postgres.sh db ./task5
+    container_name: "api"
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - DB_PASSWORD=12345678
+
+  db:
+    restart: always
+    container_name: "ad-db"
+    image: postgres:latest
+    volumes:
+      - ./.database/postgres/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=12345678
+    ports:
+      - 5436:5432
